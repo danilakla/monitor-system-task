@@ -1,0 +1,104 @@
+
+<div class="header-nav">
+	<h1>Sensor Table</h1>
+	<button (click)="[logoutUser()]" >log out</button>
+	</div>
+<div class="sensor-table-container">
+<p-table #dt1 [value]="sensors" dataKey="id" [rows]="4" [showCurrentPageReport]="true"
+	styleClass="p-datatable-customers p-datatable-gridlines"
+	[paginator]="true" currentPageReportTemplate="Totel: {totalRecords} "
+	[globalFilterFields]="['name','model','description','status']">
+	<ng-template pTemplate="caption">
+		<div class="p-d-flex">
+			<span class="p-input-icon-left p-ml-auto">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Search" />`
+            </span>
+		</div>
+	</ng-template>
+	
+	<ng-template pTemplate="header">
+		<tr class="sensor-table"> 
+		
+			<th *ngIf="this.hasAdminPrivgAdmin()">
+				
+			</th>
+			<th>
+				<div class="p-d-flex p-jc-between p-ai-center" >
+					Name
+
+				</div>
+			</th>
+            <th>
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Model
+
+				</div>
+			</th>
+            <th>
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Type
+				</div>
+			</th>
+            <th>
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Range
+				</div>
+			</th>
+            <th>
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Unit
+				</div>
+			</th>
+            <th>
+				<div class="p-d-flex p-jc-between p-ai-center">
+					Location
+				</div>
+			</th>
+			<th *ngIf="this.hasAdminPrivgAdmin()">
+
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-sensor>
+		<tr class="sensor-table">
+			<td *ngIf="this.hasAdminPrivgAdmin()" >
+			<button [routerLink]="['/sensor-form']" [queryParams]="{id:sensor.id}">edit</button>
+			</td>
+			<td [title]="[sensor.description]">
+				{{sensor.name}}
+			</td>
+			<td>
+				{{sensor.model}}
+			</td>
+            <td>
+				{{sensor?.type?.name||"not founded"}}
+			</td>
+            <td>
+				{{sensor.rangeFrom}} - {{sensor.rangeTo}}	
+			</td>
+            <td>
+				{{sensor?.unit?.name||"not founded"}}
+			</td>
+            <td>
+				{{sensor.location}}
+			</td>
+			<td *ngIf="this.hasAdminPrivgAdmin()">
+				<button (click)="deleteSensorById(sensor.id)">delete</button>
+				</td>
+		</tr>
+
+	</ng-template>
+	
+	<ng-template pTemplate="emptymessage">
+		<tr>
+			<td colspan="7">No sensors found.</td>
+		</tr>
+	</ng-template>
+</p-table>
+<div>
+	<button *ngIf="this.hasAdminPrivgAdmin()" routerLink="/sensor-form">add sensor</button>
+</div>
+
+</div>
+

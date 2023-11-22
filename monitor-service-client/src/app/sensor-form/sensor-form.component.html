@@ -1,0 +1,79 @@
+<div class="header-nav">
+<h1>Add/edit</h1>
+<button  (click)="[logoutUser()]">log out</button>
+</div>
+<form [formGroup]="sensorForm" class="sensor-form">
+    <div class="form-group">
+      <label for="name">Name<span>*</span></label>
+      <input type="text"  id="name" formControlName="name" />
+      <div *ngIf="sensorForm.get('name').invalid && (sensorForm.get('name').dirty || sensorForm.get('name').touched)">
+        <div *ngIf="sensorForm.get('name').hasError('required')">Name is required.</div>
+        <div *ngIf="sensorForm.get('name').hasError('maxlength')">Name should not exceed 30 characters.</div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="model">Model<span>*</span></label>
+      <input type="text" id="model"  formControlName="model" />
+      <div *ngIf="sensorForm.get('model').invalid && (sensorForm.get('model').dirty || sensorForm.get('model').touched)">
+        <div *ngIf="sensorForm.get('model').hasError('required')">Model is required.</div>
+        <div *ngIf="sensorForm.get('model').hasError('maxlength')">Model should not exceed 15 characters.</div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="rangeFrom">Range From<span>*</span></label>
+      <input type="number" id="rangeFrom"  formControlName="rangeFrom" />
+    </div>
+  
+    <div class="form-group">
+      <label for="rangeTo">Range To<span>*</span></label>
+      <input type="number" id="rangeTo" formControlName="rangeTo" />
+      <div *ngIf="sensorForm.hasError('invalidRange') && sensorForm.get('rangeTo').dirty">
+        Range To should be greater than Range From.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="typeId">Type<span>*</span></label>
+      <select id="typeId" formControlName="typeId"  >
+
+        <option *ngFor="let type of types" [value]="type.id">{{ type.name }}</option>
+      </select>
+      <div *ngIf="sensorForm.get('typeId').invalid && (sensorForm.get('typeId').dirty || sensorForm.get('typeId').touched)">
+        Type is required.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="ununitIdit">Unit<span>*</span></label>
+      <select id="unitId" [ngModel]="['dsa']" formControlName="unitId"  >
+        <option *ngFor="let unit of units"  [value]="unit.id">{{ unit.name }}</option>
+      </select>
+      <div *ngIf="sensorForm.get('unitId').invalid && (sensorForm.get('unitId').dirty || sensorForm.get('unitId').touched)">
+        Unit is required.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" formControlName="location" />
+      <div *ngIf="sensorForm.get('location').invalid && (sensorForm.get('location').dirty || sensorForm.get('location').touched)">
+        Location should not exceed 40 characters.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description"  formControlName="description"></textarea>
+      <div *ngIf="sensorForm.get('description').invalid && (sensorForm.get('description').dirty || sensorForm.get('description').touched)">
+        Description should not exceed 200 characters.
+      </div>
+    </div>
+  
+    <div class="form-actions">
+      <button type="button" (click)="saveSensor()" [disabled]="sensorForm.invalid">Save</button>
+      <button type="button" routerLink="/table">Cancel</button>
+    </div>
+    <p >{{this.successOrFailOperationSaveOrUpdateMessage}}</p>
+  </form>
